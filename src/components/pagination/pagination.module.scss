@@ -1,0 +1,13 @@
+.paginationContainer {
+    width: 80%;
+    margin: 0px auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    .pages {
+        display: flex;
+        flex-direction: row;
+       align-items: center;
+    }
+
+}
