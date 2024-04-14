@@ -7,20 +7,36 @@ import { access } from "fs";
 
 type InitialState = {
     cars: CarType[],
+    engineData: EngineParams[]
     page: number,
     quantity: number,
-    color: string,
-    brand: string,
-    showPicker: boolean
+    update: {
+        color: string,
+        brand: string
+    },
+    create: {
+        color: string,
+        brand: string
+    }
+    showPicker: boolean,
+    updatingCar: number,
 };
 
 const initialState: InitialState = {
     cars: [],
+    engineData: [],
     page: 1,
     quantity: 0,
-    color: '',
-    brand: '',
-    showPicker: false
+    update: {
+        color: '',
+        brand: '',
+    },
+    create: {
+        color: '',
+        brand: '',
+    },
+    showPicker: false,
+    updatingCar: -1,
 };
 
 
@@ -48,7 +64,7 @@ export const getOneCarThunk = createAsyncThunk<CarType, number>(
 export const createCarThunk = createAsyncThunk<CarType, CreateCarParams>(
     'garage/createCar',
     async ({ name, color }) => {
-        const data: Promise<CarType> = garageApi.createCar({ name, color });
+        const data: Promise<CarType> = carApi.createCar({ name, color });
         return await data;
     }
 );
@@ -56,14 +72,14 @@ export const createCarThunk = createAsyncThunk<CarType, CreateCarParams>(
 export const deleteCarThunk = createAsyncThunk<void, number>(
     'garage/deleteCar',
     async (id) => {
-        await garageApi.deleteCar(id);
+        await carApi.deleteCar(id);
     }
 );
 
 export const updateCarThunk = createAsyncThunk<CarType, UpdateCarParams>(
     'garage/createCar',
     async ({ name, color, id }) => {
-        const data: Promise<CarType> = garageApi.updateCar({ name, color, id });
+        const data: Promise<CarType> = carApi.updateCar({ name, color, id });
         return await data;
     }
 );
@@ -71,7 +87,7 @@ export const updateCarThunk = createAsyncThunk<CarType, UpdateCarParams>(
 export const handleEngineThunk = createAsyncThunk<EngineParams, HandleEngineType>(
     'engine/handle',
     async ({ id, status }) => {
-        return await carApi.handleEngine({ id, status });
+        return await carApi.handleEngine({ id, status })
     }
 );
 
@@ -98,14 +114,37 @@ const garageReducer = createSlice({
         handlePicker: (state) => {
             state.showPicker = !state.showPicker;
         },
-        setColor: (state, action: PayloadAction<string>) => {
-            state.color = action.payload;
+        setCreateColor: (state, action: PayloadAction<string>) => {
+            state.create.color = action.payload;
         },
-        setBrand: (state, action: PayloadAction<string>) => {
-            state.brand = action.payload;
+        setCreateBrand: (state, action: PayloadAction<string>) => {
+            state.create.brand = action.payload;
+        },
+        setUpdateColor: (state, action: PayloadAction<string>) => {
+            state.update.color = action.payload;
+        },
+        setUpdateBrand: (state, action: PayloadAction<string>) => {
+            state.update.brand = action.payload;
+        },
+        setUpdatingCar: (state, action: PayloadAction<number>) => {
+            state.updatingCar = action.payload;
+        },
+        setEngineData:(state, action: PayloadAction<EngineParams[]>) => {
+            state.engineData.push(...action.payload);
         },
     }
 })
 
 export default garageReducer.reducer;
-export const { setCars, setPage, setQuantity, handlePicker, setColor, setBrand } = garageReducer.actions;
+export const {
+    setCars,
+    setPage,
+    setQuantity,
+    handlePicker,
+    setCreateColor,
+    setCreateBrand,
+    setUpdateBrand,
+    setUpdateColor,
+    setUpdatingCar,
+    setEngineData
+} = garageReducer.actions;

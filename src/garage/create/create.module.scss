@@ -1,0 +1,9 @@
+.createContainer {
+    .openedPicker {
+        display: flex;
+        position: absolute;
+       }
+       .closedPicker {
+        display: none;
+       }
+}
