@@ -2,18 +2,25 @@ import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { CarType, CreateCarParams, EngineParams, HandleDriveResponse, HandleEngineType, UpdateCarParams } from "../../utils/types";
 import { garageApi } from "../../api/garageApi";
 import { carApi } from "../../api/carApi";
+import { access } from "fs";
 
 
 type InitialState = {
     cars: CarType[],
     page: number,
-    quantity: number
+    quantity: number,
+    color: string,
+    brand: string,
+    showPicker: boolean
 };
 
 const initialState: InitialState = {
     cars: [],
     page: 1,
-    quantity: 0
+    quantity: 0,
+    color: '',
+    brand: '',
+    showPicker: false
 };
 
 
@@ -87,9 +94,18 @@ const garageReducer = createSlice({
         },
         setQuantity: (state, action: PayloadAction<number>) => {
             state.quantity = action.payload;
-        }
+        },
+        handlePicker: (state) => {
+            state.showPicker = !state.showPicker;
+        },
+        setColor: (state, action: PayloadAction<string>) => {
+            state.color = action.payload;
+        },
+        setBrand: (state, action: PayloadAction<string>) => {
+            state.brand = action.payload;
+        },
     }
 })
 
 export default garageReducer.reducer;
-export const { setCars, setPage, setQuantity } = garageReducer.actions;
+export const { setCars, setPage, setQuantity, handlePicker, setColor, setBrand } = garageReducer.actions;
