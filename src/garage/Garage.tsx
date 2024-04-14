@@ -8,6 +8,7 @@ import { PayloadAction } from '@reduxjs/toolkit';
 import Pagination from './pagination/Pagination';
 import Create from './create/Create';
 import CarContainer from './carContainer/CarContainer';
+import Header from '../components/header/Header';
 
 export default function Garage() {
   const dispatch = useAppDispatch();
@@ -37,8 +38,10 @@ export default function Garage() {
 
   return (
     <main className={styles.main}>
+      <Header />
+      <Create />
       <div className={styles.carsTable}>
-        <Create />
+        
 
         {cars.length && cars.map((car: CarType, index) => {
           return (

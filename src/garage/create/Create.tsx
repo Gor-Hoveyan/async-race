@@ -5,6 +5,7 @@ import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { handlePicker, setCreateColor, setCreateBrand, createCarThunk, setCars, getSevenCarsThunk } from '../../redux/reducers/garageReducer';
 import { PayloadAction } from '@reduxjs/toolkit';
 import { CarType } from '../../utils/types';
+import { generateCar } from '../../utils/functions';
 
 export default function Create() {
     const pickerState = useAppSelector(state => state.garageReducer.showPicker);
@@ -21,18 +22,9 @@ export default function Create() {
     }
 
     async function create100Random() {
-        const brands = ["Audi", "BMW", "Mercedes-Benz", "Toyota", "Honda", "Ford", "Chevrolet", "Volkswagen"];
-        const models = ["A3", "A4", "Q5", "3 Series", "5 Series", "X3", "C-Class", "E-Class", "GLC", "Corolla", "Camry", "RAV4"];
-        const colors = ["red", "blue", "green", "yellow", "orange", "purple", "pink", "cyan", "magenta", "teal", "lime", "brown"];
-
-        function generateCar() {
-            const name = brands[Math.floor(Math.random() * brands.length)] + ' ' + models[Math.floor(Math.random() * models.length)];
-            const color = colors[Math.floor(Math.random() * colors.length)];
-
-            createCar(name, color);
-        }
         for (let i = 0; i < 100; i++) {
-            generateCar();
+            const {name, color} = generateCar();
+            createCar(name, color); 
         }
         getSevenCars(page);
     }
@@ -54,7 +46,12 @@ export default function Create() {
     }
 
     function handleCreate() {
-        createCar(brand, color);
+        if(!brand.length) {
+            const {name} = generateCar();
+            createCar(name, color);
+        } else {
+            createCar(brand, color);
+        }
     }
     return (
         <div className={styles.createContainer}>

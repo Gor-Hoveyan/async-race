@@ -50,7 +50,7 @@ export default function CarContainer({ car }: ComponentProps) {
             dispatch(setEngineData([{...engineData.payload, id: car.id}]));
             
 
-    }
+    } 
 
     function handleEngineState() {
         startEngine();
