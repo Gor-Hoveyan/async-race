@@ -1,9 +1,7 @@
-import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, PayloadAction, current } from "@reduxjs/toolkit";
 import { CarType, CreateCarParams, EngineParams, HandleDriveResponse, HandleEngineType, UpdateCarParams } from "../../utils/types";
 import { garageApi } from "../../api/garageApi";
 import { carApi } from "../../api/carApi";
-import { access } from "fs";
-
 
 type InitialState = {
     cars: CarType[],
@@ -17,9 +15,12 @@ type InitialState = {
     create: {
         color: string,
         brand: string
-    }
+    },
     showPicker: boolean,
     updatingCar: number,
+    currentPageCars: CarType[],
+    isRaceStarted: boolean,
+    isRaceEnable: boolean,
 };
 
 const initialState: InitialState = {
@@ -37,6 +38,9 @@ const initialState: InitialState = {
     },
     showPicker: false,
     updatingCar: -1,
+    currentPageCars: [],
+    isRaceStarted: false,
+    isRaceEnable: false,
 };
 
 
@@ -44,13 +48,6 @@ export const getAllCarsThunk = createAsyncThunk<CarType[], void>(
     'garage/getCars',
     async () => {
         return await garageApi.getAllCars();
-    }
-);
-
-export const getSevenCarsThunk = createAsyncThunk<CarType[], number>(
-    'garage/getSevenCars',
-    async (page) => {
-        return await garageApi.getSevenCars(page);
     }
 );
 
@@ -129,9 +126,47 @@ const garageReducer = createSlice({
         setUpdatingCar: (state, action: PayloadAction<number>) => {
             state.updatingCar = action.payload;
         },
-        setEngineData:(state, action: PayloadAction<EngineParams[]>) => {
+        setEngineData: (state, action: PayloadAction<EngineParams[]>) => {
             state.engineData.push(...action.payload);
         },
+        setCurrentPageCars: (state) => {
+            state.currentPageCars = [];
+            if (state.cars.length > 7) {
+                for (let i = state.page * 7; i > state.page * 7 - 7; i--) {
+                    if (state.cars[i]) {
+                        state.currentPageCars.push(state.cars[i]);
+                    }
+                }
+            } else {
+                state.currentPageCars = state.cars;
+            }
+
+        },
+        changeOneCarStatus: (state, action: PayloadAction<number>) => {
+            for (let i = 0; i < state.engineData.length; i++) {
+                if (state.engineData[i].id === action.payload) {
+                    state.engineData[i].started = !state.engineData[i].started;
+                }
+            }
+        },
+        changeAllCarsStatus: (state) => {
+            const cars = state.currentPageCars.map(car => car.id);
+            for(let car of cars) {
+                state.engineData.map(engine => {
+                    if(car === engine.id) {
+                        engine.started = !engine.started;
+                    }
+                    return true;
+                });
+               
+            }
+        },
+        handleRace: (state) => {
+            state.isRaceStarted = !state.isRaceStarted;
+        },
+        setIsRaceEnable: (state, action: PayloadAction<boolean>) => {
+            state.isRaceEnable = action.payload;
+        }
     }
 })
 
@@ -146,5 +181,10 @@ export const {
     setUpdateBrand,
     setUpdateColor,
     setUpdatingCar,
-    setEngineData
+    setEngineData,
+    setCurrentPageCars,
+    changeOneCarStatus,
+    changeAllCarsStatus,
+    handleRace,
+    setIsRaceEnable
 } = garageReducer.actions;

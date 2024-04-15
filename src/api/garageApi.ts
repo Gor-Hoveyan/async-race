@@ -12,20 +12,6 @@ async function getAllCars() {
     }
 }
 
-async function getSevenCars(page: number) {
-    try {
-        const data = await fetch(`http://localhost:3000/garage?_page=${page}&_limit=7`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        });
-        return await data.json();
-    } catch(e) {
-        console.log(e);
-    }   
-}
-
 async function getOneCar(id: number) {
     try {
         const data = await fetch(`http://localhost:3000/${id}`, {
@@ -41,4 +27,4 @@ async function getOneCar(id: number) {
     
 }
 
-export const garageApi = { getAllCars, getSevenCars, getOneCar };
+export const garageApi = { getAllCars, getOneCar };

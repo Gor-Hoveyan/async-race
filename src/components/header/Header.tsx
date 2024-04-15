@@ -1,5 +1,4 @@
 import styles from './header.module.scss';
-import "@fontsource/aileron";
 
 export default function Header() {
     return (

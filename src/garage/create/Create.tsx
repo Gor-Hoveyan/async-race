@@ -2,7 +2,7 @@ import styles from './create.module.scss';
 import { HexColorPicker } from 'react-colorful';
 import { IoColorPalette } from "react-icons/io5";
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
-import { handlePicker, setCreateColor, setCreateBrand, createCarThunk, setCars, getSevenCarsThunk } from '../../redux/reducers/garageReducer';
+import { handlePicker, setCreateColor, setCreateBrand, createCarThunk, setCars, setQuantity, getAllCarsThunk, setCurrentPageCars } from '../../redux/reducers/garageReducer';
 import { PayloadAction } from '@reduxjs/toolkit';
 import { CarType } from '../../utils/types';
 import { generateCar } from '../../utils/functions';
@@ -10,15 +10,16 @@ import { generateCar } from '../../utils/functions';
 export default function Create() {
     const pickerState = useAppSelector(state => state.garageReducer.showPicker);
     const brand = useAppSelector(state => state.garageReducer.create.brand);
-    const page = useAppSelector((state => state.garageReducer.page));
     const color = useAppSelector(state => state.garageReducer.create.color);
     const dispatch = useAppDispatch();
 
-    async function getSevenCars(page: number) {
-        const data: unknown | PayloadAction<CarType[], string, { arg: number; requestId: string; requestStatus: "fulfilled"; }, never> = await dispatch(getSevenCarsThunk(page));
+    async function getAllCars() {
+        const data: unknown | PayloadAction<CarType[], string, { arg: number; requestId: string; requestStatus: "fulfilled"; }, never> = await dispatch(getAllCarsThunk());
         const cars = data as PayloadAction<CarType[], string, { arg: number; requestId: string; requestStatus: "fulfilled"; }, never>;
 
         dispatch(setCars(cars.payload));
+        dispatch(setQuantity(cars.payload.length));
+        dispatch(setCurrentPageCars());
     }
 
     async function create100Random() {
@@ -26,11 +27,13 @@ export default function Create() {
             const {name, color} = generateCar();
             createCar(name, color); 
         }
-        getSevenCars(page);
+        getAllCars();
+        
     }
 
     async function createCar(name: string, color: string) {
         await dispatch(createCarThunk({ name, color }));
+        getAllCars()
     }
 
     function handlePickerOpening() {

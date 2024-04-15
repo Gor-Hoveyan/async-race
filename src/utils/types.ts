@@ -21,9 +21,10 @@ export type HandleEngineType = {
 }
 
 export type EngineParams = {
-    velocity: string,
+    velocity: number,
     distance: number,
-    id: number
+    id: number,
+    started: boolean
 }
 
 export type HandleDriveResponse = {

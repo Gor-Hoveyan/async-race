@@ -1,8 +1,8 @@
 import styles from './update.module.scss';
-import { RgbColor, HexColorPicker } from 'react-colorful';
+import { HexColorPicker } from 'react-colorful';
 import { IoColorPalette } from "react-icons/io5";
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
-import { handlePicker, setUpdateColor, setUpdateBrand, setCars, getSevenCarsThunk, updateCarThunk, setUpdatingCar } from '../../redux/reducers/garageReducer';
+import { handlePicker, setUpdateColor, setUpdateBrand, setCars, setQuantity, updateCarThunk, setUpdatingCar, getAllCarsThunk, setCurrentPageCars } from '../../redux/reducers/garageReducer';
 import { PayloadAction } from '@reduxjs/toolkit';
 import { CarType } from '../../utils/types';
 
@@ -11,15 +11,16 @@ interface ComponentProps { id: number }
 export default function Update({ id }: ComponentProps) {
     const pickerState = useAppSelector(state => state.garageReducer.showPicker);
     const brand = useAppSelector(state => state.garageReducer.update.brand);
-    const page = useAppSelector((state => state.garageReducer.page));
     const color = useAppSelector(state => state.garageReducer.update.color);
     const dispatch = useAppDispatch();
 
-    async function getSevenCars(page: number) {
-        const data: unknown | PayloadAction<CarType[], string, { arg: number; requestId: string; requestStatus: "fulfilled"; }, never> = await dispatch(getSevenCarsThunk(page));
+    async function getAllCars() {
+        const data: unknown | PayloadAction<CarType[], string, { arg: number; requestId: string; requestStatus: "fulfilled"; }, never> = await dispatch(getAllCarsThunk());
         const cars = data as PayloadAction<CarType[], string, { arg: number; requestId: string; requestStatus: "fulfilled"; }, never>;
 
         dispatch(setCars(cars.payload));
+        dispatch(setQuantity(cars.payload.length));
+        dispatch(setCurrentPageCars());
     }
 
     function handlePickerOpening() {
@@ -36,6 +37,7 @@ export default function Update({ id }: ComponentProps) {
 
     async function updateCar(id: number, name: string, color: string) {
         await dispatch(updateCarThunk({ id, name, color }));
+        getAllCars();
     }
 
     function handleUpdate() {
