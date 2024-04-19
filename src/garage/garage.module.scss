@@ -1,12 +1,15 @@
 .main {
-  width: 100vw;
+  max-width: 100vw;
   max-height: fit-content;
   min-height: 100vh;
   background-image: linear-gradient(to right, #5f5dee, #ec6184);
 
-
+  .driveBtns {
+    padding: 1%;
+    width: 100%;
+    border-bottom: 5px dotted white;
+  }
   .carsTable {
-    border-top: 5px dotted white;
     max-width: 100vw;
   }
 }

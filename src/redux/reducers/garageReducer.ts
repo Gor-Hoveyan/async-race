@@ -1,11 +1,11 @@
-import { createSlice, createAsyncThunk, PayloadAction, current } from "@reduxjs/toolkit";
-import { CarType, CreateCarParams, EngineParams, HandleDriveResponse, HandleEngineType, UpdateCarParams } from "../../utils/types";
+import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
+import { CarType, CreateCarParams, EngineParams, GarageWinnerData, HandleDriveResponse, HandleEngineType, UpdateCarParams } from "../../utils/types";
 import { garageApi } from "../../api/garageApi";
 import { carApi } from "../../api/carApi";
 
 type InitialState = {
     cars: CarType[],
-    engineData: EngineParams[]
+    engineData: EngineParams[],
     page: number,
     quantity: number,
     update: {
@@ -21,6 +21,8 @@ type InitialState = {
     currentPageCars: CarType[],
     isRaceStarted: boolean,
     isRaceEnable: boolean,
+    winnerData: GarageWinnerData | null,
+    isPopupOpened: boolean,
 };
 
 const initialState: InitialState = {
@@ -41,6 +43,8 @@ const initialState: InitialState = {
     currentPageCars: [],
     isRaceStarted: false,
     isRaceEnable: false,
+    winnerData: null,
+    isPopupOpened: false
 };
 
 
@@ -132,9 +136,10 @@ const garageReducer = createSlice({
         setCurrentPageCars: (state) => {
             state.currentPageCars = [];
             if (state.cars.length > 7) {
-                for (let i = state.page * 7; i > state.page * 7 - 7; i--) {
+                for (let i = state.page * 7; i > state.page * 7 - 8; i--) {
                     if (state.cars[i]) {
                         state.currentPageCars.push(state.cars[i]);
+                        return state;
                     }
                 }
             } else {
@@ -146,19 +151,13 @@ const garageReducer = createSlice({
             for (let i = 0; i < state.engineData.length; i++) {
                 if (state.engineData[i].id === action.payload) {
                     state.engineData[i].started = !state.engineData[i].started;
+                    break;
                 }
             }
         },
         changeAllCarsStatus: (state) => {
-            const cars = state.currentPageCars.map(car => car.id);
-            for(let car of cars) {
-                state.engineData.map(engine => {
-                    if(car === engine.id) {
-                        engine.started = !engine.started;
-                    }
-                    return true;
-                });
-               
+            for(let i = 0; i < state.engineData.length; i++) {
+                state.engineData[i].started = !state.engineData[i].started;
             }
         },
         handleRace: (state) => {
@@ -166,6 +165,21 @@ const garageReducer = createSlice({
         },
         setIsRaceEnable: (state, action: PayloadAction<boolean>) => {
             state.isRaceEnable = action.payload;
+        },
+        setWinnerData: (state, action: PayloadAction<GarageWinnerData>) => {
+            state.winnerData = action.payload;
+        },
+        handlePopup: (state) => {
+            state.isPopupOpened = !state.isPopupOpened;
+        },
+        reset: (state) => {
+            state.engineData = [];
+            state.isRaceEnable = false;
+            state.isRaceStarted = false;
+            state.winnerData = null;
+        },
+        updateEngineData: (state, action: PayloadAction<EngineParams[]>) => {
+            state.engineData = JSON.parse(JSON.stringify(action.payload));
         }
     }
 })
@@ -186,5 +200,9 @@ export const {
     changeOneCarStatus,
     changeAllCarsStatus,
     handleRace,
-    setIsRaceEnable
+    setIsRaceEnable,
+    setWinnerData,
+    handlePopup,
+    reset,
+    updateEngineData
 } = garageReducer.actions;
