@@ -58,6 +58,7 @@ export default function CarContainer({ car }: ComponentProps) {
     return (
         <div className={styles.carContainer}>
             <div className={styles.road}>
+                <div className={styles.carData}>
                 <FaCarSide
                     color={car.color}
                     className={styles.carElem}
@@ -66,16 +67,17 @@ export default function CarContainer({ car }: ComponentProps) {
                         ||
                         (isRaceStarted && currentEngine[0] && currentEngine[0].started))
                         ?
-                        { transform: 'translateX(55%)', transitionDuration: `${currentEngine[0].distance / currentEngine[0].velocity / 1000}s` }
+                        { transform: 'translateX(160%)', transitionDuration: `${currentEngine[0].distance / currentEngine[0].velocity / 1000}s` }
                         :
                         {}}
                 />
-                <p>{car.name}</p>
-                <button onClick={() => deleteCar(car.id)}>Delete</button>
-                <button onClick={() => handleUpdating()}>{updatingCar === car.id ? 'Cancel' : 'Update'}</button>
+                <p className={styles.carName}>{car.name}</p>
+                </div>
+                <button className={styles.btn} onClick={() => deleteCar(car.id)}>Delete</button>
+                <button className={styles.btn} onClick={() => handleUpdating()}>{updatingCar === car.id ? 'Cancel' : 'Update'}</button>
                 {updatingCar === car.id && <Update id={car.id} />}
-                <button disabled={(currentEngine[0] && currentEngine[0].distance !== undefined)} onClick={() => handleEngineState()}>Run Engine</button>
-                <button disabled={!(currentEngine[0] && currentEngine[0].distance !== undefined)} onClick={() => handleDriving()}>Start</button>
+                <button className={styles.btn} disabled={(currentEngine[0] && currentEngine[0].distance !== undefined)} onClick={() => handleEngineState()}>Run Engine</button>
+                <button className={styles.btn} disabled={!(currentEngine[0] && currentEngine[0].distance !== undefined)} onClick={() => handleDriving()}>Start</button>
                 <div className={styles.finish}></div>
             </div>
         </div>

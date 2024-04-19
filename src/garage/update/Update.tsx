@@ -46,11 +46,11 @@ export default function Update({ id }: ComponentProps) {
     }
 
     return (
-        <div>
-            <input type='text' placeholder='Brand' value={brand} onChange={(event) => handleBrandChange(event.currentTarget.value)} />
+        <div className={styles.updateContainer}>
+            <input className={styles.textInput} type='text' placeholder='Brand' value={brand} onChange={(event) => handleBrandChange(event.currentTarget.value)} />
             <IoColorPalette size={50} className={styles.pickerOpenerIcon} onClick={() => handlePickerOpening()} />
             <HexColorPicker className={pickerState ? styles.openedPicker : styles.closedPicker} onChange={(color) => handleColorChange(color)} />
-            <button onClick={() => handleUpdate()}>Save</button>
+            <button className={styles.btn} onClick={() => handleUpdate()}>Save</button>
         </div>
     );
 }

@@ -139,7 +139,6 @@ const garageReducer = createSlice({
                 for (let i = state.page * 7; i > state.page * 7 - 8; i--) {
                     if (state.cars[i]) {
                         state.currentPageCars.push(state.cars[i]);
-                        return state;
                     }
                 }
             } else {

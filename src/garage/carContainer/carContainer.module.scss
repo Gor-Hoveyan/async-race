@@ -1,18 +1,52 @@
 .carContainer {
     user-select: none;
-    border-bottom: 5px dotted white;
+    border-bottom: 5px dotted red;
 
     .road {
         width: 80%;
         padding-left: 3%;
-        border-right: 0.8vw solid rgba(255, 255, 255, 0.5);
+        border-right: 0.8vw solid rgba(255, 68, 0, 0.5);
         .carElem {
-            font-size: 4vw;
+            font-size: 2vw;
             max-width: 100%;
             min-width: 100%;
             text-align: left;
             transform: translateX(-45%);
         }
+        .carName {
+            color: white;
+            font-weight: bolder;
+            font-size: 1.2vw;
+            text-align: center;
+        }
+        .carData {
+            width: 50%;
+            display: flex;
+            align-items: center;
+        }
+    }
+    
+    .btn {
+        display: inline-block;
+        padding: 0.5vw 1vw;
+        margin-left: 10px;
+        font-size: 16px;
+        font-weight: bold;
+        color: #fff;
+        text-decoration: none;
+        background-color: orangered;
+        border: 2px solid orangered;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+      }
+      .btn:hover {
+        background-color: red;
+        border-color: red;
+    }
+    
+    .btn:focus {
+        outline: none;
     }
 
 }

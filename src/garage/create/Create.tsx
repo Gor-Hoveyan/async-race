@@ -58,12 +58,12 @@ export default function Create() {
     }
     return (
         <div className={styles.createContainer}>
-            <button onClick={() => create100Random()}>Generate 100 random cars</button>
-            <input type='text' placeholder='Brand' value={brand} onChange={(event) => handleBrandChange(event.currentTarget.value)} />
+            <button className={styles.btn} onClick={() => create100Random()}>Generate 100 random cars</button>
+            <input className={styles.textInput} type='text' placeholder='Brand' value={brand} onChange={(event) => handleBrandChange(event.currentTarget.value)} />
 
             <IoColorPalette size={50} className={styles.pickerOpenerIcon} onClick={() => handlePickerOpening()} />
             <HexColorPicker className={pickerState ? styles.openedPicker : styles.closedPicker} onChange={(color) => handleColorChange(color)} />
-            <button onClick={() => handleCreate()}>Create car</button>
+            <button className={styles.btn} onClick={() => handleCreate()}>Create car</button>
         </div>
     );
 }

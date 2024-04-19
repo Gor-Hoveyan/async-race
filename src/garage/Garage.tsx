@@ -64,7 +64,7 @@ export default function Garage() {
   async function getAllCars() {
     const data: unknown | PayloadAction<CarType[], string, { arg: number; requestId: string; requestStatus: "fulfilled"; }, never> = await dispatch(getAllCarsThunk());
     const cars = data as PayloadAction<CarType[], string, { arg: number; requestId: string; requestStatus: "fulfilled"; }, never>;
-
+ 
     dispatch(setCars(cars.payload));
     dispatch(setCurrentPageCars());
     dispatch(setQuantity(cars.payload.length))
@@ -130,8 +130,8 @@ export default function Garage() {
       <Create />
       <div className={styles.carsTable}>
         <div className={styles.driveBtns}>
-          <button onClick={() => handleRaceMode()}>{isRaceEnable ? 'Race' : 'Prepare for race'}</button>
-          <button onClick={() => handleReset()}>Reset</button>
+          <button className={styles.btn} onClick={() => handleRaceMode()}>{isRaceEnable ? 'Race' : 'Prepare for race'}</button>
+          <button className={styles.btn} onClick={() => handleReset()}>Reset</button>
         </div>
         {currentPageCars.length && currentPageCars.map((car: CarType, index) => {
           return (
