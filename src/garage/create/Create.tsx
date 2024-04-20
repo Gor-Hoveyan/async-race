@@ -24,16 +24,18 @@ export default function Create() {
 
     async function create100Random() {
         for (let i = 0; i < 100; i++) {
-            const {name, color} = generateCar();
-            createCar(name, color); 
+            const { name, color } = generateCar();
+            createCar(name, color);
         }
         getAllCars();
-        
+
     }
 
     async function createCar(name: string, color: string) {
         await dispatch(createCarThunk({ name, color }));
-        getAllCars()
+        getAllCars();
+        dispatch(handlePicker());
+        dispatch(setCreateBrand(''));
     }
 
     function handlePickerOpening() {
@@ -49,8 +51,8 @@ export default function Create() {
     }
 
     function handleCreate() {
-        if(!brand.length) {
-            const {name} = generateCar();
+        if (!brand.length) {
+            const { name } = generateCar();
             createCar(name, color);
         } else {
             createCar(brand, color);
@@ -58,11 +60,13 @@ export default function Create() {
     }
     return (
         <div className={styles.createContainer}>
-            <button className={styles.btn} onClick={() => create100Random()}>Generate 100 random cars</button>
+            <button className={styles.btn} onClick={() => create100Random()}>Create 100 random cars</button>
             <input className={styles.textInput} type='text' placeholder='Brand' value={brand} onChange={(event) => handleBrandChange(event.currentTarget.value)} />
 
-            <IoColorPalette size={50} className={styles.pickerOpenerIcon} onClick={() => handlePickerOpening()} />
-            <HexColorPicker className={pickerState ? styles.openedPicker : styles.closedPicker} onChange={(color) => handleColorChange(color)} />
+            <div className={styles.pickerContainer}>
+                <IoColorPalette size={50} className={styles.pickerOpenerIcon} onClick={() => handlePickerOpening()} />
+                <HexColorPicker className={pickerState ? styles.openedPicker : styles.closedPicker} onChange={(color) => handleColorChange(color)} />
+            </div>
             <button className={styles.btn} onClick={() => handleCreate()}>Create car</button>
         </div>
     );

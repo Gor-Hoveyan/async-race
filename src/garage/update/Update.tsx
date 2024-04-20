@@ -1,6 +1,5 @@
 import styles from './update.module.scss';
 import { HexColorPicker } from 'react-colorful';
-import { IoColorPalette } from "react-icons/io5";
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { handlePicker, setUpdateColor, setUpdateBrand, setCars, setQuantity, updateCarThunk, setUpdatingCar, getAllCarsThunk, setCurrentPageCars } from '../../redux/reducers/garageReducer';
 import { PayloadAction } from '@reduxjs/toolkit';
@@ -12,6 +11,7 @@ export default function Update({ id }: ComponentProps) {
     const pickerState = useAppSelector(state => state.garageReducer.showPicker);
     const brand = useAppSelector(state => state.garageReducer.update.brand);
     const color = useAppSelector(state => state.garageReducer.update.color);
+    const car = useAppSelector(state => state.garageReducer.cars.filter(car => car.id === id));
     const dispatch = useAppDispatch();
 
     async function getAllCars() {
@@ -48,8 +48,7 @@ export default function Update({ id }: ComponentProps) {
     return (
         <div className={styles.updateContainer}>
             <input className={styles.textInput} type='text' placeholder='Brand' value={brand} onChange={(event) => handleBrandChange(event.currentTarget.value)} />
-            <IoColorPalette size={50} className={styles.pickerOpenerIcon} onClick={() => handlePickerOpening()} />
-            <HexColorPicker className={pickerState ? styles.openedPicker : styles.closedPicker} onChange={(color) => handleColorChange(color)} />
+            <HexColorPicker color={car[0].color} className={styles.picker} onChange={(color) => handleColorChange(color)} />
             <button className={styles.btn} onClick={() => handleUpdate()}>Save</button>
         </div>
     );

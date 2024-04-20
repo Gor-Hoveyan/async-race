@@ -51,16 +51,18 @@ export default function Winners() {
             <table className={styles.winnersContainer}>
                 <tr>
                     <th onClick={() => getWinners()}>Nº</th>
-                    <th>Name</th>
-                    <th  onClick={() => getWinners('wins')}>Wins</th>
-                    <th onClick={() => getWinners('time')}>Time</th>
+                    <th>CAR</th>
+                    <th>NAME</th>
+                    <th  onClick={() => getWinners('wins')}>WINS</th>
+                    <th onClick={() => getWinners('time')}>Best TIME</th>
                 </tr>
                 {currentPageWinners.map((winner, index) => {
                     const car = cars.filter(car => car.id === winner.id);
                     return (
                         <tr key={index} className={styles.winnerContainer}>
                             <td><div className={styles.cellContainer}><p className={styles.idCell}>{winner.id}</p>
-                                <FaCarSide color={car[0] && car[0].color} size={60} className={styles.carElem} /></div></td>
+                                </div></td>
+                                <td><FaCarSide color={car[0] && car[0].color} size={60} className={styles.carElem} /></td>
                             <td><div className={styles.cellContainer}>{car[0] ? car[0].name : ""}</div></td>
                             <td><div className={styles.cellContainer}>{winner.wins}</div></td>
                             <td><div className={styles.cellContainer}>{String(winner.time).slice(0, 5)}s</div></td>

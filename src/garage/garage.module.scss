@@ -6,7 +6,7 @@
 
   .driveBtns {
     padding: 1%;
-    width: 100%;
+    max-width: 100vw;
     border-bottom: 5px dotted red;
 
     .btn {
@@ -30,6 +30,11 @@
 
       &:focus {
         outline: none;
+      }
+
+      &:disabled {
+        background-color: gray;
+        border-color: gray;
       }
     }
   }

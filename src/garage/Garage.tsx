@@ -131,7 +131,7 @@ export default function Garage() {
       <div className={styles.carsTable}>
         <div className={styles.driveBtns}>
           <button className={styles.btn} onClick={() => handleRaceMode()}>{isRaceEnable ? 'Race' : 'Prepare for race'}</button>
-          <button className={styles.btn} onClick={() => handleReset()}>Reset</button>
+          <button className={styles.btn} onClick={() => handleReset()} disabled={!isRaceEnable}>Reset</button>
         </div>
         {currentPageCars.length && currentPageCars.map((car: CarType, index) => {
           return (
