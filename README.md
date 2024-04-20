@@ -11,7 +11,7 @@
   <li>Sort winners table by time/wins/№</li>
   <li>Pagination for cars and winners lists</li>
 </ul>
-<h2>Stack</h2>
+<h2>Used technologies</h2>
 <ul>
   <li>React</li>
   <li>React Router v6</li>
