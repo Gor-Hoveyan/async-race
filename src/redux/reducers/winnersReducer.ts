@@ -66,8 +66,8 @@ const winnersReducer = createSlice({
         },
         setCurrentPageWinners: (state) => {
             state.currentPageWinners = [];
-            if (state.winners.length > 7) {
-                for (let i = state.page * 7; i > state.page * 7 - 8; i--) {
+            if (state.winners.length > 10) {
+                for (let i = state.page * 10; i > state.page * 10 - 11; i--) {
                     if (state.winners[i]) {
                         state.currentPageWinners.push(state.winners[i]);
                     }

@@ -1,14 +1,13 @@
 import styles from './update.module.scss';
 import { HexColorPicker } from 'react-colorful';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
-import { handlePicker, setUpdateColor, setUpdateBrand, setCars, setQuantity, updateCarThunk, setUpdatingCar, getAllCarsThunk, setCurrentPageCars } from '../../redux/reducers/garageReducer';
+import { setUpdateColor, setUpdateBrand, setCars, setQuantity, updateCarThunk, setUpdatingCar, getAllCarsThunk, setCurrentPageCars } from '../../redux/reducers/garageReducer';
 import { PayloadAction } from '@reduxjs/toolkit';
 import { CarType } from '../../utils/types';
 
 interface ComponentProps { id: number }
 
 export default function Update({ id }: ComponentProps) {
-    const pickerState = useAppSelector(state => state.garageReducer.showPicker);
     const brand = useAppSelector(state => state.garageReducer.update.brand);
     const color = useAppSelector(state => state.garageReducer.update.color);
     const car = useAppSelector(state => state.garageReducer.cars.filter(car => car.id === id));
@@ -21,10 +20,6 @@ export default function Update({ id }: ComponentProps) {
         dispatch(setCars(cars.payload));
         dispatch(setQuantity(cars.payload.length));
         dispatch(setCurrentPageCars());
-    }
-
-    function handlePickerOpening() {
-        dispatch(handlePicker());
     }
 
     function handleColorChange(color: string) {

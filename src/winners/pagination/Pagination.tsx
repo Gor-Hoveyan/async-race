@@ -25,7 +25,7 @@ export default function Pagination() {
             <div className={styles.pages}>
                 {page > 1 && <FaCaretLeft onClick={() => handleLeftPagination()} />}
                 <p >{page}</p>
-                {(Math.ceil(quantity / 7) > page) && <FaCaretRight onClick={() => handleRightPagination()} />}
+                {(Math.ceil(quantity / 10) > page) && <FaCaretRight onClick={() => handleRightPagination()} />}
             </div>
         </div>
     );

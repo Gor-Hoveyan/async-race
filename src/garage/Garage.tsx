@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import styles from './garage.module.scss';
 import { useAppDispatch, useAppSelector } from './../redux/hooks';
-import { getAllCarsThunk, setCars, setQuantity, setCurrentPageCars, setEngineData, handleEngineThunk, handleRace, setIsRaceEnable, changeAllCarsStatus, handleDriveThunk, changeOneCarStatus, setWinnerData, handlePopup, reset, updateEngineData } from './../redux/reducers/garageReducer';
+import { getAllCarsThunk, setCars, setQuantity, setCurrentPageCars, setEngineData, handleEngineThunk, handleRace, setIsRaceEnable, handleDriveThunk,  setWinnerData, handlePopup, reset, updateEngineData } from './../redux/reducers/garageReducer';
 import { CarType, EngineParams, HandleEngineType, WinnerData } from './../utils/types';
 import { PayloadAction } from '@reduxjs/toolkit';
 import Pagination from './pagination/Pagination';
@@ -119,10 +119,6 @@ export default function Garage() {
   useEffect(() => {
     getAllCars();
   }, []);
-
-  useEffect(() => {
-    console.log(engineData);
-  }, [engineData]);
 
   return (
     <main className={styles.main}>
